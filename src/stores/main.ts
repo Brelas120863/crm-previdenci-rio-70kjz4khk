@@ -28,6 +28,7 @@ interface MainStoreType {
   deleteLead: (id: string) => void
   deleteTask: (id: number) => void
   addLead: (lead: Omit<Lead, 'id'>) => void
+  addClient: (client: Omit<Client, 'id'>) => void
   clearAllData: () => void
 }
 
@@ -42,8 +43,13 @@ export function MainStoreProvider({ children }: { children: ReactNode }) {
   const deleteClient = (id: string) => setClients((clients) => clients.filter((c) => c.id !== id))
   const deleteLead = (id: string) => setLeads((leads) => leads.filter((l) => l.id !== id))
   const deleteTask = (id: number) => setTasks((tasks) => tasks.filter((t) => t.id !== id))
+
   const addLead = (lead: Omit<Lead, 'id'>) => {
-    setLeads((prev) => [...prev, { ...lead, id: `l${Date.now()}` }])
+    setLeads((prev) => [{ ...lead, id: `l${Date.now()}` }, ...prev])
+  }
+
+  const addClient = (client: Omit<Client, 'id'>) => {
+    setClients((prev) => [{ ...client, id: `c${Date.now()}` }, ...prev])
   }
 
   const clearAllData = () => {
@@ -65,6 +71,7 @@ export function MainStoreProvider({ children }: { children: ReactNode }) {
         deleteLead,
         deleteTask,
         addLead,
+        addClient,
         clearAllData,
       },
     },

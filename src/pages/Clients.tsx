@@ -27,6 +27,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
+import { NewClientDialog } from '@/components/NewClientDialog'
 
 export default function Clients() {
   const [search, setSearch] = useState('')
@@ -57,6 +58,7 @@ export default function Clients() {
             Acesse e gerencie todos os processos dos seus clientes ativos.
           </p>
         </div>
+        <NewClientDialog />
       </div>
 
       <Card className="p-1 border-border/50 shadow-sm overflow-hidden bg-card">

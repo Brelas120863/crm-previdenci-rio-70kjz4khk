@@ -173,12 +173,17 @@ export const MOCK_ACTIVITIES = [
 export const getStatusColor = (status: string) => {
   switch (status) {
     case 'Concedido':
+    case 'Concluído':
       return 'bg-emerald-100 text-emerald-800 border-emerald-200'
     case 'Em Análise':
+    case 'Triagem':
+    case 'Análise de Documentos':
       return 'bg-amber-100 text-amber-800 border-amber-200'
     case 'Indeferido':
       return 'bg-rose-100 text-rose-800 border-rose-200'
     case 'Recurso':
+    case 'Requerimento enviado ao INSS':
+    case 'Em espera de exigência':
       return 'bg-blue-100 text-blue-800 border-blue-200'
     default:
       return 'bg-gray-100 text-gray-800 border-gray-200'
