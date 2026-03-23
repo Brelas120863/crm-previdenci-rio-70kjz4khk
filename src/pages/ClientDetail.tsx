@@ -357,7 +357,7 @@ export default function ClientDetail() {
                       Status Atualizado para "{client.status}"
                     </h3>
                     <p className="text-sm text-muted-foreground mt-1">
-                      Alteração feita por Dr. Roberto Almeida.
+                      Alteração feita por Agnaldo Brelas.
                     </p>
                     <span className="text-xs text-muted-foreground font-medium mt-2 block">
                       Hoje, 10:45

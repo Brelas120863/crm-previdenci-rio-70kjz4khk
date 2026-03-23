@@ -33,7 +33,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 
 export default function Layout() {
   const location = useLocation()
@@ -146,21 +146,17 @@ export default function Layout() {
             <DropdownMenu>
               <DropdownMenuTrigger className="outline-none rounded-full ring-offset-background focus-visible:ring-2 focus-visible:ring-ring">
                 <Avatar className="h-9 w-9 border border-border hover:opacity-90 transition-opacity">
-                  <AvatarImage
-                    src="https://img.usecurling.com/ppl/thumbnail?gender=male&seed=12"
-                    alt="Dr. Roberto"
-                  />
                   <AvatarFallback className="bg-primary/10 text-primary font-medium text-xs">
-                    RA
+                    AB
                   </AvatarFallback>
                 </Avatar>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-60 mt-1">
                 <DropdownMenuLabel className="p-3 pb-2">
                   <div className="flex flex-col space-y-1">
-                    <p className="text-sm font-semibold leading-none">Dr. Roberto Almeida</p>
+                    <p className="text-sm font-semibold leading-none">Agnaldo Brelas</p>
                     <p className="text-xs leading-none text-muted-foreground">
-                      roberto@prevmanager.com.br
+                      agnaldobrelas@gmail.com
                     </p>
                   </div>
                 </DropdownMenuLabel>
