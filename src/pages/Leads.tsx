@@ -4,6 +4,7 @@ import { Badge } from '@/components/ui/badge'
 import { Phone, UsersRound, MessageCircle, Trash2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useToast } from '@/hooks/use-toast'
+import { CreateLeadDialog } from '@/components/CreateLeadDialog'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -16,7 +17,7 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
 
-const KANBAN_COLUMNS = [
+export const KANBAN_COLUMNS = [
   { id: 'Contato Inicial', label: 'Contato Inicial', color: 'border-blue-200 bg-blue-50/50' },
   { id: 'Pré-Análise', label: 'Pré-Análise', color: 'border-amber-200 bg-amber-50/50' },
   { id: 'Proposta Enviada', label: 'Proposta Enviada', color: 'border-purple-200 bg-purple-50/50' },
@@ -51,7 +52,7 @@ export default function Leads() {
             Gerencie potenciais clientes desde o primeiro contato até o fechamento.
           </p>
         </div>
-        <Button className="shadow-sm">Adicionar Lead</Button>
+        <CreateLeadDialog columns={KANBAN_COLUMNS} />
       </div>
 
       {leads.length === 0 ? (
