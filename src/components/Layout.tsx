@@ -161,8 +161,10 @@ export default function Layout() {
                   </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem className="cursor-pointer py-2 px-3">
-                  <Settings className="mr-2 h-4 w-4 text-muted-foreground" /> Configurações
+                <DropdownMenuItem asChild className="cursor-pointer py-2 px-3">
+                  <Link to="/settings" className="w-full flex items-center">
+                    <Settings className="mr-2 h-4 w-4 text-muted-foreground" /> Configurações
+                  </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem className="cursor-pointer text-rose-600 focus:text-rose-600 focus:bg-rose-50 py-2 px-3">

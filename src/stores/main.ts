@@ -19,26 +19,49 @@ export interface Lead {
 export type Task = (typeof MOCK_TASKS)[0]
 export type Activity = (typeof MOCK_ACTIVITIES)[0]
 
+export interface UserSettings {
+  notifications: {
+    newLead: boolean
+    deadlines: boolean
+    statusChange: boolean
+    systemUpdates: boolean
+  }
+  signatureUrl: string | null
+}
+
 interface MainStoreType {
   clients: Client[]
   leads: Lead[]
   tasks: Task[]
   activities: Activity[]
+  settings: UserSettings
   deleteClient: (id: string) => void
   deleteLead: (id: string) => void
   deleteTask: (id: number) => void
   addLead: (lead: Omit<Lead, 'id'>) => void
   addClient: (client: Omit<Client, 'id'>) => void
   clearAllData: () => void
+  updateSettings: (settings: Partial<UserSettings>) => void
 }
 
 const MainStoreContext = createContext<MainStoreType | undefined>(undefined)
+
+const defaultSettings: UserSettings = {
+  notifications: {
+    newLead: true,
+    deadlines: true,
+    statusChange: true,
+    systemUpdates: false,
+  },
+  signatureUrl: null,
+}
 
 export function MainStoreProvider({ children }: { children: ReactNode }) {
   const [clients, setClients] = useState<Client[]>(MOCK_CLIENTS)
   const [leads, setLeads] = useState<Lead[]>(MOCK_LEADS as Lead[])
   const [tasks, setTasks] = useState<Task[]>(MOCK_TASKS)
   const [activities, setActivities] = useState<Activity[]>(MOCK_ACTIVITIES)
+  const [settings, setSettings] = useState<UserSettings>(defaultSettings)
 
   const deleteClient = (id: string) => setClients((clients) => clients.filter((c) => c.id !== id))
   const deleteLead = (id: string) => setLeads((leads) => leads.filter((l) => l.id !== id))
@@ -59,6 +82,10 @@ export function MainStoreProvider({ children }: { children: ReactNode }) {
     setActivities([])
   }
 
+  const updateSettings = (newSettings: Partial<UserSettings>) => {
+    setSettings((prev) => ({ ...prev, ...newSettings }))
+  }
+
   return React.createElement(
     MainStoreContext.Provider,
     {
@@ -67,12 +94,14 @@ export function MainStoreProvider({ children }: { children: ReactNode }) {
         leads,
         tasks,
         activities,
+        settings,
         deleteClient,
         deleteLead,
         deleteTask,
         addLead,
         addClient,
         clearAllData,
+        updateSettings,
       },
     },
     children,
