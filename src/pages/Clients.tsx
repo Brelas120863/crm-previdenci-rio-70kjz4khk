@@ -1,5 +1,6 @@
 import { useState } from 'react'
-import { MOCK_CLIENTS, getStatusColor } from '@/lib/mock-data'
+import { getStatusColor } from '@/lib/mock-data'
+import useMainStore from '@/stores/main'
 import {
   Table,
   TableBody,
@@ -11,16 +12,38 @@ import {
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { Search, Filter, ArrowRight, Contact } from 'lucide-react'
+import { Search, Filter, ArrowRight, Contact, Trash2 } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { Card } from '@/components/ui/card'
+import { useToast } from '@/hooks/use-toast'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog'
 
 export default function Clients() {
   const [search, setSearch] = useState('')
+  const { clients, deleteClient } = useMainStore()
+  const { toast } = useToast()
 
-  const filteredClients = MOCK_CLIENTS.filter(
+  const filteredClients = clients.filter(
     (c) => c.name.toLowerCase().includes(search.toLowerCase()) || c.cpf.includes(search),
   )
+
+  const handleDelete = (id: string) => {
+    deleteClient(id)
+    toast({
+      title: 'Dados excluídos com sucesso',
+      description: 'O segurado foi permanentemente removido.',
+    })
+  }
 
   return (
     <div className="space-y-6 animate-fade-in-up">
@@ -87,23 +110,56 @@ export default function Clients() {
                   </Badge>
                 </TableCell>
                 <TableCell className="text-right">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    asChild
-                    className="opacity-0 group-hover:opacity-100 transition-opacity text-primary hover:text-primary hover:bg-primary/10"
-                  >
-                    <Link to={`/clients/${client.id}`}>
-                      Detalhes <ArrowRight className="ml-2 h-4 w-4" />
-                    </Link>
-                  </Button>
+                  <div className="flex justify-end items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      asChild
+                      className="text-primary hover:text-primary hover:bg-primary/10"
+                    >
+                      <Link to={`/clients/${client.id}`}>
+                        Detalhes <ArrowRight className="ml-2 h-4 w-4" />
+                      </Link>
+                    </Button>
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="text-muted-foreground hover:text-destructive hover:bg-destructive/10"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>Tem certeza que deseja excluir?</AlertDialogTitle>
+                          <AlertDialogDescription>
+                            Esta ação não pode ser desfeita. O segurado será permanentemente
+                            removido.
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                          <AlertDialogAction
+                            onClick={() => handleDelete(client.id)}
+                            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                          >
+                            Excluir
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
+                  </div>
                 </TableCell>
               </TableRow>
             ))}
             {filteredClients.length === 0 && (
               <TableRow>
                 <TableCell colSpan={5} className="h-32 text-center text-muted-foreground">
-                  Nenhum segurado encontrado com a busca "{search}".
+                  {clients.length === 0
+                    ? 'Nenhum segurado cadastrado.'
+                    : `Nenhum segurado encontrado com a busca "${search}".`}
                 </TableCell>
               </TableRow>
             )}

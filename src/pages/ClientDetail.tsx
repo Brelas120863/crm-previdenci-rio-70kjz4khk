@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react'
-import { useParams, Link } from 'react-router-dom'
-import { MOCK_CLIENTS, getStatusColor } from '@/lib/mock-data'
+import { useParams, Link, useNavigate } from 'react-router-dom'
+import { getStatusColor } from '@/lib/mock-data'
+import useMainStore from '@/stores/main'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -18,8 +19,20 @@ import {
   History,
   Scale,
   User as UserIcon,
+  Trash2,
 } from 'lucide-react'
 import { useToast } from '@/hooks/use-toast'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog'
 
 const DocItem = ({
   title,
@@ -73,13 +86,16 @@ const DocItem = ({
 
 export default function ClientDetail() {
   const { id } = useParams()
+  const { clients, deleteClient } = useMainStore()
   const { toast } = useToast()
-  const client = useMemo(() => MOCK_CLIENTS.find((c) => c.id === id), [id])
+  const navigate = useNavigate()
+
+  const client = useMemo(() => clients.find((c) => c.id === id), [id, clients])
 
   if (!client) {
     return (
-      <div className="flex flex-col items-center justify-center h-[60vh]">
-        <h2 className="text-2xl font-bold mb-4">Segurado não encontrado</h2>
+      <div className="flex flex-col items-center justify-center h-[60vh] space-y-4">
+        <h2 className="text-2xl font-bold">Segurado não encontrado</h2>
         <Button asChild>
           <Link to="/clients">Voltar para a lista</Link>
         </Button>
@@ -92,6 +108,15 @@ export default function ClientDetail() {
       title: 'Dados atualizados com sucesso!',
       description: 'As alterações no perfil do segurado foram salvas.',
     })
+  }
+
+  const handleDelete = () => {
+    deleteClient(client.id)
+    toast({
+      title: 'Dados excluídos com sucesso',
+      description: 'O segurado foi removido do sistema.',
+    })
+    navigate('/clients')
   }
 
   return (
@@ -124,6 +149,33 @@ export default function ClientDetail() {
           </div>
         </div>
         <div className="flex gap-2">
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button
+                variant="outline"
+                className="text-destructive hover:bg-destructive/10 hover:text-destructive shadow-sm"
+              >
+                <Trash2 className="mr-2 h-4 w-4" /> Excluir Cliente
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Tem certeza que deseja excluir?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  Esta ação não pode ser desfeita. Todos os dados deste cliente serão removidos.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={handleDelete}
+                  className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                >
+                  Excluir
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
           <Button onClick={handleSave} className="shadow-sm">
             <Save className="mr-2 h-4 w-4" /> Salvar Alterações
           </Button>

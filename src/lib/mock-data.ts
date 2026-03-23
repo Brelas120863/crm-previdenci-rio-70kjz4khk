@@ -124,6 +124,52 @@ export const MOCK_LEADS = [
   },
 ]
 
+export const MOCK_TASKS = [
+  {
+    id: 1,
+    title: 'Protocolar Recurso - João Batista',
+    desc: 'Prazo final administrativo INSS',
+    daysLeft: 1,
+  },
+  { id: 2, title: 'Anexar Laudo - Ana Paula', desc: 'Juntar laudo atualizado', daysLeft: 2 },
+  { id: 3, title: 'Perícia Médica - Carlos Eduardo', desc: 'Agência INSS Centro', daysLeft: 3 },
+]
+
+export const MOCK_ACTIVITIES = [
+  {
+    id: 1,
+    title: 'Benefício Concedido',
+    desc: 'Aposentadoria de Maria José foi deferida no INSS.',
+    time: 'Há 2 horas',
+    type: 'success',
+    icon: 'CheckCircle2',
+  },
+  {
+    id: 2,
+    title: 'Novo Lead Recebido',
+    desc: 'Carlos Eduardo entrou em contato via WhatsApp.',
+    time: 'Há 4 horas',
+    type: 'info',
+    icon: 'UserPlus',
+  },
+  {
+    id: 3,
+    title: 'Prazo Urgente',
+    desc: 'Recurso de Ana Paula vence amanhã.',
+    time: 'Há 1 dia',
+    type: 'warning',
+    icon: 'AlertCircle',
+  },
+  {
+    id: 4,
+    title: 'Documento Pendente',
+    desc: 'Falta PPP de João Batista para análise prévia.',
+    time: 'Há 1 dia',
+    type: 'default',
+    icon: 'Clock',
+  },
+]
+
 export const getStatusColor = (status: string) => {
   switch (status) {
     case 'Concedido':
